@@ -6,32 +6,49 @@
     <title>HoloHarmoniq</title>
     <style>
         body {
-            background: black;
-            color: cyan;
-            font-family: Arial, sans-serif;
+            background: #000;
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
             text-align: center;
             padding: 50px;
+            margin: 0;
         }
         h1 {
-            font-size: 3em;
+            font-size: 4em;
             text-transform: uppercase;
             animation: glow 2s infinite alternate;
         }
         p {
             font-size: 1.5em;
+            opacity: 0.8;
         }
         @keyframes glow {
             from {
-                text-shadow: 0 0 10px cyan;
+                text-shadow: 0 0 20px cyan, 0 0 30px cyan;
             }
             to {
-                text-shadow: 0 0 20px white;
+                text-shadow: 0 0 40px cyan, 0 0 60px cyan;
             }
+        }
+        .button {
+            background-color: transparent;
+            border: 2px solid cyan;
+            color: cyan;
+            padding: 20px 40px;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background-color: cyan;
+            color: black;
         }
     </style>
 </head>
 <body>
-    <h1>Üdv a HoloHarmoniq világában!</h1>
+    <h1>Üdvözlünk a HoloHarmoniq világában!</h1>
     <p>Az új generációs holografikus élmény.</p>
+    <button class="button">Fedezd fel most</button>
 </body>
 </html>
