@@ -1,114 +1,122 @@
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Send, Mic, Volume2 } from "lucide-react";
-
-export default function HoloMano() {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const getAIResponse = async (text) => {
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
-
-      if (!response.ok) throw new Error(`API error: ${response.status}`);
-      const data = await response.json();
-      return data.reply || "I didn't understand that. 😊";
-    } catch (error) {
-      console.error("Error getting AI response:", error);
-      return "Something went wrong! Try again later. 😕";
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-    const userMessage = { text: input, sender: "You" };
-    setMessages([...messages, userMessage]);
-    setInput("");
-
-    const aiReply = await getAIResponse(input);
-    setMessages((prev) => [...prev, { text: aiReply, sender: "HoloMano" }]);
-    speak(aiReply);
-  };
-
-  const speak = (text) => {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = "en-US";
-    window.speechSynthesis.speak(speech);
-  };
-
-  const listen = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return alert("Speech recognition is not supported in this browser.");
-
-    const recognizer = new SpeechRecognition();
-    recognizer.lang = "en-US";
-    recognizer.onresult = (event) => setInput(event.results[0][0].transcript);
-    recognizer.start();
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-900 text-white">
-      <motion.h1 
-        className="text-3xl font-bold mb-4" 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        transition={{ duration: 1 }}
-      >
-        👓 HoloMano
-      </motion.h1>
-
-      <Card className="w-full max-w-md bg-gray-800 p-4 rounded-xl">
-        <CardContent className="space-y-4">
-          <div className="h-64 overflow-y-auto p-2 bg-gray-700 rounded-lg">
-            {messages.map((msg, index) => (
-              <motion.div 
-                key={index} 
-                className={`p-2 rounded-lg ${msg.sender === "You" ? "text-right" : "text-left"}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <strong>{msg.sender}:</strong> {msg.text}
-              </motion.div>
-            ))}
-            <div ref={chatEndRef} />
-          </div>
-
-          <Input 
-            value={input} 
-            onChange={(e) => setInput(e.target.value)} 
-            placeholder="Ask HoloMano..." 
-            className="bg-gray-900 text-white"
-          />
-
-          <div className="flex space-x-2">
-            <Button onClick={sendMessage} className="bg-blue-600 hover:bg-blue-700 flex items-center">
-              <Send className="mr-2" /> Send
-            </Button>
-
-            <Button onClick={() => speak(input)} className="bg-green-600 hover:bg-green-700 flex items-center">
-              <Volume2 className="mr-2" /> Speak
-            </Button>
-
-            <Button onClick={listen} className="bg-red-600 hover:bg-red-700 flex items-center">
-              <Mic className="mr-2" /> Listen
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+jó verzió <!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoloHarmoniq Titkár</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #00FFFF;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            margin: 0;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: glow 1.5s infinite alternate;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 70%;
+            margin: 0 auto;
+        }
+        /* 3D container for the speech interaction */
+        .3d-container {
+            width: 100%;
+            height: 100%;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #speechOutput {
+            font-size: 1.5em;
+            color: #fff;
+            margin-top: 20px;
+        }
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 30px #00FFFF;
+            }
+            to {
+                text-shadow: 0 0 20px #FFFFFF, 0 0 30px #FFFFFF, 0 0 40px #FFFFFF;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Üdvözöllek a HoloHarmoniq világában!</h1>
+    <p>Én vagyok a Holo Titkár, itt, hogy segítsek!</p>
+    
+    <!-- Speech Interaction Section -->
+    <div class="container">
+        <div class="3d-container">
+            <p id="speechOutput">Kérlek, mondd el, mit szeretnél!</p>
+        </div>
     </div>
-  );
-}
 
+    <button onclick="startSpeechRecognition()">Kezdjük el a beszédfelismerést</button>
+
+    <script>
+        // Check for Speech Recognition API support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const synth = window.speechSynthesis;
+        let recognition;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.lang = 'hu-HU';
+
+            recognition.onstart = function() {
+                console.log('Beszédfelismerés elindult...');
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[event.resultIndex][0].transcript;
+                document.getElementById('speechOutput').innerText = 'Értem, te mondtad: ' + transcript;
+                speakResponse(transcript); // Respond to the user's input
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Hiba a beszédfelismerés közben:', event.error);
+            };
+        } else {
+            alert('A beszédfelismerés nem támogatott ebben a böngészőben.');
+        }
+
+        // Start speech recognition
+        function startSpeechRecognition() {
+            recognition.start();
+        }
+
+        // Function for speech synthesis (Text-to-speech)
+        function speakResponse(text) {
+            const response = `Te mondtad: ${text}. Hogyan segíthetek még?`;
+            const utterance = new SpeechSynthesisUtterance(response);
+            utterance.lang = 'hu-HU';
+            synth.speak(utterance);
+        }
+
+        // For 3D Avatar - Currently placeholder
+        function load3DModel() {
+            // Placeholder: This can later be a Three.js 3D model or a video-based avatar
+            console.log('3D Avatar Loading...');
+        }
+
+        window.onload = function() {
+            load3DModel(); // Initialize 3D avatar once page loads
+        }
+    </script>
+</body>
+</html>
