@@ -23,11 +23,11 @@ export default function HoloMano() {
           max_tokens: 50,
         }),
       });
-      
+
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
-      
+
       const data = await response.json();
       return data.choices?.[0]?.text?.trim() || "I didn't understand that. 😊";
     } catch (error) {
@@ -40,7 +40,7 @@ export default function HoloMano() {
     if (input.trim()) {
       setMessages([...messages, { text: input, sender: "User" }]);
       const aiResponse = await fetchAIResponse(input);
-      setMessages((prev) => [...prev, { text: aiResponse, sender: "HoloMano" }]);
+      setMessages((prev) => [...prev, { text: aiResponse, sender: "Holo Manó" }]);
       speak(aiResponse);
       setInput("");
     }
@@ -73,9 +73,9 @@ export default function HoloMano() {
         animate={{ opacity: 1 }} 
         transition={{ duration: 1 }}
       >
-        👓 HoloMano
+        👓 Holo Manó
       </motion.h1>
-      
+
       <Card className="w-full max-w-md bg-gray-800 p-4 rounded-xl">
         <CardContent className="space-y-4">
           <div className="h-64 overflow-y-auto p-2 bg-gray-700 rounded-lg">
@@ -91,14 +91,14 @@ export default function HoloMano() {
               </motion.div>
             ))}
           </div>
-          
+
           <Input 
             value={input} 
             onChange={(e) => setInput(e.target.value)} 
-            placeholder="Ask HoloMano..." 
+            placeholder="Ask Holo Manó..." 
             className="bg-gray-900 text-white"
           />
-          
+
           <div className="flex space-x-2">
             <Button onClick={handleSend} className="bg-blue-600 hover:bg-blue-700 flex items-center">
               <Send className="mr-2" /> Send
