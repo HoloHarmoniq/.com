@@ -15,7 +15,7 @@ export default function HoloMano() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer YOUR_OPENAI_API_KEY",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: "gpt-4",
@@ -38,7 +38,7 @@ export default function HoloMano() {
 
   const handleSend = async () => {
     if (input.trim()) {
-      setMessages([...messages, { text: input, sender: "User" }]);
+      setMessages((prev) => [...prev, { text: input, sender: "User" }]);
       const aiResponse = await fetchAIResponse(input);
       setMessages((prev) => [...prev, { text: aiResponse, sender: "HoloMano" }]);
       speak(aiResponse);
@@ -116,6 +116,4 @@ export default function HoloMano() {
       </Card>
     </div>
   );
-}export default HoloMano;
-
-
+}
