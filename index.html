@@ -3,52 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HoloHarmoniq</title>
+    <title>HoloHarmoniq - Kapcsolat</title>
     <style>
         body {
             background: #000;
-            color: #00ffff;
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            padding: 50px;
+            color: #0ff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
         }
+
+        .form-container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00FFFF;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
         h1 {
-            font-size: 4em;
+            font-size: 2.5em;
+            color: #00FFFF;
             text-transform: uppercase;
-            animation: glow 2s infinite alternate;
+            letter-spacing: 3px;
+            animation: pulse 1.5s infinite alternate;
         }
-        p {
-            font-size: 1.5em;
-            opacity: 0.8;
+
+        label {
+            display: block;
+            margin: 20px 0 5px;
+            font-size: 1.2em;
         }
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 20px cyan, 0 0 30px cyan;
-            }
-            to {
-                text-shadow: 0 0 40px cyan, 0 0 60px cyan;
-            }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #222;
+            color: #00FFFF;
+            font-size: 1.1em;
+            margin: 10px 0 20px;
+            border-radius: 10px;
+            box-sizing: border-box;
         }
-        .button {
-            background-color: transparent;
-            border: 2px solid cyan;
-            color: cyan;
-            padding: 20px 40px;
-            font-size: 1.5em;
+
+        button {
+            background: #00FFFF;
+            color: #000;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
-        .button:hover {
-            background-color: cyan;
-            color: black;
+
+        button:hover {
+            background: #00b3b3;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
-    <h1>Üdvözlünk a HoloHarmoniq világában!</h1>
-    <p>Az új generációs holografikus élmény.</p>
-    <button class="button">Fedezd fel most</button>
+
+    <div class="form-container">
+        <h1>Kapcsolatba lépni a jövővel</h1>
+        <form name="contact" method="POST" data-netlify="true">
+            <label for="name">Név</label>
+            <input type="text" id="name" name="name" placeholder="Írd be a neved" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Írd be az email címed" required>
+
+            <label for="message">Üzenet</label>
+            <textarea id="message" name="message" placeholder="Hozzáadni egy üzenetet..." required></textarea>
+
+            <button type="submit">Lépj kapcsolatba</button>
+        </form>
+    </div>
+
 </body>
 </html>
